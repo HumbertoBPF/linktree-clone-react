@@ -19,6 +19,16 @@ const theme = createTheme({
       main: "#254F1A",
     },
   },
+  // Customize components
+  components: {
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          textTransform: "none",
+        },
+      },
+    },
+  },
 });
 
 createRoot(document.getElementById("root")!).render(

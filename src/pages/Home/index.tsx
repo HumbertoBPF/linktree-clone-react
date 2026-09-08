@@ -1,5 +1,11 @@
+import CustomAppBar from "../../components/CustomAppBar";
+
 function Home() {
-  return <h1>Home</h1>;
+  return (
+    <>
+      <CustomAppBar />
+    </>
+  );
 }
 
 export default Home;
