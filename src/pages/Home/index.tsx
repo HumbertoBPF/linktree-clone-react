@@ -9,9 +9,14 @@ import {
 import CustomAppBar from "../../components/CustomAppBar";
 import chain from "../../assets/chain.jpg";
 import Footer from "../../components/Footer";
+import { useNavigate } from "react-router";
+import { useState, type ChangeEvent } from "react";
 
 function Home() {
+  const [linkSuffix, setLinkSuffix] = useState("");
+
   const theme = useTheme();
+  const navigate = useNavigate();
 
   return (
     <Box
@@ -52,8 +57,20 @@ function Home() {
           >
             <Grid size={6}>
               <TextField
-                placeholder="linktr.ee/"
                 sx={{ backgroundColor: "#FFFFFF", width: "100%" }}
+                value={`linktr.ee/${linkSuffix}`}
+                onChange={(event: ChangeEvent<HTMLInputElement>) => {
+                  const { value } = event.target;
+
+                  // We want the suffix after the linktr.ee/ domain part of the URL
+                  if (value.startsWith(`linktr.ee/`)) {
+                    setLinkSuffix(value.slice(10));
+                    return;
+                  }
+
+                  // If the linkSuffix does not have the linktr.ee prefix, fallback to the initial value
+                  setLinkSuffix("");
+                }}
               />
             </Grid>
             <Grid size={6}>
@@ -66,6 +83,7 @@ function Home() {
                   marginLeft: 2,
                   width: "100%",
                 }}
+                onClick={() => navigate("/signup")}
               >
                 Get started for free
               </Button>
