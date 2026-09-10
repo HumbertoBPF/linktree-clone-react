@@ -8,13 +8,18 @@ import {
 } from "@mui/material";
 import CustomAppBar from "../../components/CustomAppBar";
 import chain from "../../assets/chain.jpg";
+import Footer from "../../components/Footer";
 
 function Home() {
   const theme = useTheme();
 
   return (
     <Box
-      sx={{ backgroundColor: theme.palette.primary.main, minHeight: "100vh" }}
+      sx={{
+        backgroundColor: theme.palette.primary.main,
+        minHeight: "100vh",
+        padding: 4,
+      }}
     >
       <CustomAppBar />
       <Grid container spacing={2} sx={{ paddingX: 8 }}>
@@ -79,6 +84,7 @@ function Home() {
           />
         </Grid>
       </Grid>
+      <Footer />
     </Box>
   );
 }

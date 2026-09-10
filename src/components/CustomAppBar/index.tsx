@@ -6,7 +6,7 @@ import Button from "@mui/material/Button";
 
 function CustomAppBar() {
   return (
-    <Box sx={{ flexGrow: 1, padding: 4 }}>
+    <Box sx={{ flexGrow: 1 }}>
       <AppBar
         position="static"
         sx={{ backgroundColor: "#FFFFFF", borderRadius: 20 }}
