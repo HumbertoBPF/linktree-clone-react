@@ -13,6 +13,7 @@ import {
   Typography,
 } from "@mui/material";
 import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { useState, type ChangeEvent } from "react";
 import { isValidEmail, isValidPassword } from "../../utils/validations";
 
@@ -26,6 +27,8 @@ function SignUpForm() {
   const [firstNameError, setFirstNameError] = useState("");
   const [lastNameError, setLastNameError] = useState("");
   const [passwordError, setPasswordError] = useState("");
+
+  const [showPassword, setShowPassword] = useState(false);
 
   const validateEmail = (email: string): boolean => {
     if (email === "") {
@@ -176,15 +179,25 @@ function SignUpForm() {
             </InputLabel>
             <OutlinedInput
               id="password-input"
-              type={"password"}
+              type={showPassword ? "text" : "password"}
               value={password}
               onChange={(event: ChangeEvent<HTMLInputElement>) => {
                 setPassword(event.target.value);
               }}
               endAdornment={
                 <InputAdornment position="end">
-                  <IconButton edge="end">
-                    <Visibility />
+                  <IconButton
+                    aria-label={
+                      showPassword
+                        ? "hide the password"
+                        : "display the password"
+                    }
+                    edge="end"
+                    onClick={() => {
+                      setShowPassword(!showPassword);
+                    }}
+                  >
+                    {showPassword ? <VisibilityOff /> : <Visibility />}
                   </IconButton>
                 </InputAdornment>
               }
