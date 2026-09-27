@@ -16,6 +16,14 @@ import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { useState, type ChangeEvent } from "react";
 import { isValidEmail, isValidPassword } from "../../utils/validations";
+import { signup } from "../../api/linktree";
+import FeedbackAlert from "../FeedbackAlert";
+
+interface FormAlert {
+  open: boolean;
+  severity: "success" | "error";
+  message: string;
+}
 
 function SignUpForm() {
   const [email, setEmail] = useState("");
@@ -29,6 +37,12 @@ function SignUpForm() {
   const [passwordError, setPasswordError] = useState("");
 
   const [showPassword, setShowPassword] = useState(false);
+
+  const [formAlert, setFormAlert] = useState<FormAlert>({
+    open: false,
+    severity: "success",
+    message: "",
+  });
 
   const validateEmail = (email: string): boolean => {
     if (email === "") {
@@ -79,8 +93,8 @@ function SignUpForm() {
 
   const submitForm = () => {
     const isValidEmail = validateEmail(email);
-    const isValidFirstName = validateFirstName(email);
-    const isValidLastName = validateLastName(email);
+    const isValidFirstName = validateFirstName(firstName);
+    const isValidLastName = validateLastName(lastName);
     const isValidPassword = validatePassword(password);
 
     if (
@@ -89,7 +103,30 @@ function SignUpForm() {
       isValidLastName &&
       isValidPassword
     ) {
-      console.log("Submit form");
+      signup(
+        {
+          email,
+          firstName,
+          lastName,
+          password,
+        },
+        () => {
+          setFormAlert({
+            open: true,
+            severity: "success",
+            message: "Account successfully created",
+          });
+        },
+        (error) => {
+          const errorMessage = error.response?.data.detail;
+          setFormAlert({
+            open: true,
+            severity: "error",
+            message:
+              errorMessage ?? "An unexpected issue happened. Try again later.",
+          });
+        },
+      );
     }
   };
 
@@ -237,6 +274,15 @@ function SignUpForm() {
           Already have an account? <Link href="/signin">Log in</Link>
         </Typography>
       </Box>
+      <FeedbackAlert
+        open={formAlert.open}
+        severity={formAlert.severity}
+        onClose={() => {
+          setFormAlert({ ...formAlert, open: false });
+        }}
+      >
+        {formAlert.message}
+      </FeedbackAlert>
     </Box>
   );
 }
